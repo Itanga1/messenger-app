@@ -24,8 +24,8 @@ const Signup = () => {
     }else{
       try {
         setLoading(true)
-        await createUserWithEmailAndPassword(auth, email, password);
-        await addDoc(collection(db, "users"), {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await addDoc(collection(db, "users",userCredential.user.uid), {
           userName: username,
           userEmail: email,
         });
