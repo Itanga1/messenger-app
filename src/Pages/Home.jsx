@@ -142,7 +142,7 @@ const Home = () => {
               return(
                 <div style={{alignSelf: message.sender == auth.currentUser.displayName ? "flex-start":"flex-end"}} className="flex flex-col w-fit">
                   <span style={{backgroundColor: message.sender == auth.currentUser.displayName?"green":"whitesmoke", color: message.sender == auth.currentUser.displayName?"white":"black"}} className="bg-green-800 px-[10px] py-[5px] rounded-2xl">{message.body}</span>
-                  <span className="italic text-sm">{message.createdAt.toDate().toLocaleString("en-GB")}</span>
+                  <span className="italic text-sm">{message.createdAt?.toDate().toLocaleString("en-GB")}</span>
                 </div>
               )
             })
