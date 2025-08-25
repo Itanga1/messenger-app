@@ -34,6 +34,28 @@ const NewChat = () => {
       console.error("Error fetching users:", e);
     }
   };
+  const handleSearch = (e) =>{
+    setTimeout(()=>{
+      setUsersFinal(users.filter((user)=>{
+        return user.userName.toLowerCase().includes(e.target.value.toLowerCase().trim());
+      }))
+    },1000)
+  }
+  const handleCreateChat = async(id, userName) => {
+    const customId = auth.currentUser.uid + "-" + id;
+    const chatRef = doc(db, "chats", customId);
+    const docSnap = await getDoc(chatRef);
+    if (docSnap.exists()) {
+      alert("Chat alredy exists!");
+    } else {
+      await setDoc(chatRef, {
+        user1: currentUserName,
+        user2: userName
+      });
+      
+      alert("Chat created with custom ID!");
+    }
+  }
   useEffect(()=>{
     getUsers();
   },[])
