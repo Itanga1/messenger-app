@@ -16,7 +16,6 @@ const Login = () => {
       alert(err.message);
     }
   };
-  console.log(auth.currentUser?.email);
 
   return ( 
     <div className="flex items-center justify-center bg-white min-h-[100vh]">

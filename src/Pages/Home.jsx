@@ -23,7 +23,6 @@ const Home = () => {
 
   const handleSearchChats = ()=>{
     setTimeout(()=>{
-      console.log("here");
       setChatsFinal(chats.filter((chat)=>chat.user1.toLowerCase().includes(searchText.toLowerCase()) || chat.user2.toLowerCase().includes(searchText.toLocaleLowerCase())))
     },1000)
   }
@@ -98,15 +97,12 @@ const Home = () => {
         id: doc.id,
         ...doc.data(),
       }));
-      console.log(chatsData);
       setChats(chatsData);
       setChatsFinal(chatsData);
     });
 
     return () => unsubscribe();
   }, []);
-  console.log(auth.currentUser.email)
-  console.log(auth.currentUser.displayName)
   return ( 
     <div className="self-center h-[100vh] w-[100vw] max-w-[1200px] bg-[whitesmoke] p-[50px] relative">
       <section className="flex justify-between">

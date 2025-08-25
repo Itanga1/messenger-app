@@ -21,13 +21,6 @@ const NewChat = () => {
       const currentUser = fetchedUsers.find(user=>user.id == auth.currentUser.uid);
       setLoading(false)
       setCurrentUserName(currentUser.userName);
-      console.log(currentUser.userName);
-      /* if (currentUser) {
-        setCurrentUserName(currentUser.userName);
-        console.log(currentUser.userName);
-      } else {
-        console.warn("Current user not found in fetched users.");
-      } */
     } catch (e) {
       setLoading(false);
       alert("Error fetching users");
