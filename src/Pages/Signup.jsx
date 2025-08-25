@@ -25,7 +25,7 @@ const Signup = () => {
       try {
         setLoading(true)
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        await addDoc(collection(db, "users",userCredential.user.uid), {
+        await setDoc(doc(db, "users",userCredential.user.uid), {
           userName: username,
           userEmail: email,
         });
