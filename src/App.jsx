@@ -6,25 +6,34 @@ import { AuthContext } from "./Contexts/AuthContext"
 import { useEffect, useState } from "react"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "./config/firebase"
+import { ProtectedRoutes } from "./utils/ProtectedRoutes"
+import { UnProtectedRoutes } from "./utils/UnProtectedRoutes"
+import Loading from "./components/Loading"
 
 function App() {
   const [currentUser, setCurrentUser] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(()=>{
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      setLoading(false)
     });
     return unsubscribe;
   },[])
   return (
     <AuthContext.Provider value={{currentUser}}>
-      <BrowserRouter>
+      {loading ? <Loading/> : <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/signup" element={<Signup/>}/>
-          <Route path="/" element={<Home/>} />
+          <Route element={<UnProtectedRoutes/>}>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/signup" element={<Signup/>}/>
+          </Route>
+          <Route element={<ProtectedRoutes/>}>
+            <Route path="/" element={<Home/>} />
+          </Route>
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter>}
     </AuthContext.Provider>
   )
 }
