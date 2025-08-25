@@ -29,6 +29,9 @@ const Signup = () => {
           userName: username,
           userEmail: email,
         });
+        await updateProfile(userCredential.user, {
+          displayName: username,
+        });
         setLoading(false)
         alert("Signup successful!");
         setEmail('');
