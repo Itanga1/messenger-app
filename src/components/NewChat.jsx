@@ -63,7 +63,7 @@ const NewChat = () => {
     <div style={{backgroundColor: "rgba(2, 108, 74, 0.6)"}} className=" fixed top-0 left-0 right-0 bottom-0 z-[100] flex justify-center items-center">
       <ClickAwayListener onClickAway={()=>setShowAddNewChat(false)}>
         <div style={{display: loading&&'flex', flexDirection:loading&&'column'}} className="bg-white h-[80vh] w-[300px] rounded-2xl p-[10px]">
-          <input autoFocus type="text" placeholder="Type here to search users" className=" w-full my-[20px] py-[5px] px-[20px] rounded-2xl shadow-[0px_0px_5px_4px_rgba(0,_0,_0,_0.1)] text-sm"/>
+          <input onKeyUp={handleSearch} autoFocus type="text" placeholder="Type here to search users" className=" w-full my-[20px] py-[5px] px-[20px] rounded-2xl shadow-[0px_0px_5px_4px_rgba(0,_0,_0,_0.1)] text-sm"/>
           <h1 className="font-bold text-md">All users</h1>
           <div style={{alignItems: loading&&'center'}} className=" flex flex-col gap-[5px] mt-[10px]">
             {
