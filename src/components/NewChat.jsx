@@ -67,8 +67,8 @@ const NewChat = () => {
           <h1 className="font-bold text-md">All users</h1>
           <div style={{alignItems: loading&&'center'}} className=" flex flex-col gap-[5px] mt-[10px]">
             {
-              users.length>0 && users.map((user)=>{
-                return <span className="rounded py-[5px] px-[10px] shadow-[0px_0px_5px_1px_rgba(0,_0,_0,_0.1)] hover:bg-green-800 hover:text-white cursor-pointer active:opacity-[0.8]">@{user.userName}</span>
+              usersFinal.length>0 && usersFinal.map((user)=>{
+                return user.id !== auth.currentUser.uid && <span onClick={()=>handleCreateChat(user.id,user.userName)} className="rounded py-[5px] px-[10px] shadow-[0px_0px_5px_1px_rgba(0,_0,_0,_0.1)] hover:bg-green-800 hover:text-white cursor-pointer active:opacity-[0.8]">@{user.userName}</span>
               })
             }
             {loading && <span className=" w-[50px] h-[50px] border-[3px] border-gray-300 border-t-green-800 animate-spin rounded-full"></span>}
