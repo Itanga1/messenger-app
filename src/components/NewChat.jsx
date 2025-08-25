@@ -1,20 +1,33 @@
 import { useContext, useEffect, useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
 import { CreateNewChatContext } from "../Contexts/CreateNewChatContext";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { collection, getDocs, setDoc, doc, getDoc} from "firebase/firestore";
+import { auth, db } from "../config/firebase";
 import Loading from "./Loading";
 
 const NewChat = () => {
   const {showAddNewChat, setShowAddNewChat} = useContext(CreateNewChatContext);
   const [users, setUsers] = useState([]);
+  const [usersFinal, setUsersFinal] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentUserName, setCurrentUserName] = useState('')
   const getUsers = async () => {
     try {
       setLoading(true)
       const querySnapshot = await getDocs(collection(db, "users"));
-      setUsers(querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+      const fetchedUsers = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+      setUsers(fetchedUsers);
+      setUsersFinal(fetchedUsers);
+      const currentUser = fetchedUsers.find(user=>user.id == auth.currentUser.uid);
       setLoading(false)
+      setCurrentUserName(currentUser.userName);
+      console.log(currentUser.userName);
+      /* if (currentUser) {
+        setCurrentUserName(currentUser.userName);
+        console.log(currentUser.userName);
+      } else {
+        console.warn("Current user not found in fetched users.");
+      } */
     } catch (e) {
       setLoading(false);
       alert("Error fetching users");
