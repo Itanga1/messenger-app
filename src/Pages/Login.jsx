@@ -17,19 +17,75 @@ const Login = () => {
     }
   };
 
-  return ( 
-    <div className="flex items-center justify-center bg-white min-h-[100vh]">
-      <form onSubmit={handleLogin} className="flex flex-col gap-[5px] px-[30px] py-[40px] bg-white shadow-[-1px_0px_6px_1px_rgba(0,_0,_0,_0.1)] rounded-2xl w-[300px]">
-        <h1 className="text-center font-bold text-2xl mb-[20px]">Login</h1>
-        <label>Email: </label>
-        <input required onChange={(e)=>setEmail(e.target.value)} className="px-[20px] py-[5px] border-2 border-green-800 rounded-lg" type="email" placeholder="Enter your email"/>
-        <label>Password: </label>
-        <input required onChange={(e)=>setPassword(e.target.value)} className="px-[20px] py-[5px] border-2 border-green-800 rounded-lg" type="password" placeholder="Enter your password"/>
-        <button type="submit" className=" bg-green-800 text-white text-lg py-[5px] rounded-lg my-[10px]">Login</button>
-        <p className="text-center">Don't have account? <Link className="text-green-800 underline" to={'/signup'}>Signup</Link></p>
+  return (
+    <div className="flex items-center justify-center min-h-[100vh] bg-gradient-to-br from-green-50 via-white to-green-100 w-screen">
+      <form
+        onSubmit={handleLogin}
+        className="flex flex-col gap-5 px-10 py-12 bg-white/80 backdrop-blur-sm shadow-xl rounded-3xl w-[420px] border border-green-100"
+      >
+        {/* Header Section */}
+        <div className="text-center mb-4">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-gray-600 text-sm">Sign in to continue to your account</p>
+        </div>
+
+        {/* Email Input */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-semibold text-gray-700 ml-1">Email Address</label>
+          <input
+            required
+            onChange={(e) => setEmail(e.target.value)}
+            className="px-5 py-3 border-2 border-green-600 rounded-xl focus:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400"
+            type="email"
+            placeholder="Enter your email"
+          />
+        </div>
+
+        {/* Password Input */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-semibold text-gray-700 ml-1">Password</label>
+          <input
+            required
+            onChange={(e) => setPassword(e.target.value)}
+            className="px-5 py-3 border-2 border-green-600 rounded-xl focus:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400"
+            type="password"
+            placeholder="Enter your password"
+          />
+        </div>
+
+        {/* Login Button */}
+        <button
+          type="submit"
+          className="bg-green-800 hover:bg-green-900 text-white text-lg font-semibold py-3.5 rounded-xl mt-2 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+        >
+          Sign In
+        </button>
+
+        {/* Divider */}
+        <div className="relative my-2">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-200"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-4 bg-white/80 text-gray-500">or</span>
+          </div>
+        </div>
+
+        {/* Signup Link */}
+        <p className="text-center text-gray-600">
+          Don't have an account?{' '}
+          <Link
+            className="text-green-700 font-semibold hover:text-green-900 transition-colors duration-200 hover:underline"
+            to={'/signup'}
+          >
+            Create Account
+          </Link>
+        </p>
       </form>
     </div>
-   );
+  );
 }
- 
+
 export default Login;
