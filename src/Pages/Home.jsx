@@ -14,20 +14,20 @@ const Home = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const [message, setMessage] = useState('');
   const [searchText, setSearchText] = useState('');
-  
+
   const [fetchingMessages, setFetchingMessages] = useState(false);
   const [sendingMessage, setSendingMessage] = useState(false);
   const [messages, setMessages] = useState([]);
   const [unsubscribe, setUnsubscribe] = useState(null);
   const navigate = useNavigate();
 
-  const handleSearchChats = ()=>{
-    setTimeout(()=>{
-      setChatsFinal(chats.filter((chat)=>chat.user1.toLowerCase().includes(searchText.toLowerCase()) || chat.user2.toLowerCase().includes(searchText.toLocaleLowerCase())))
-    },1000)
+  const handleSearchChats = () => {
+    setTimeout(() => {
+      setChatsFinal(chats.filter((chat) => chat.user1.toLowerCase().includes(searchText.toLowerCase()) || chat.user2.toLowerCase().includes(searchText.toLocaleLowerCase())))
+    }, 1000)
   }
 
-  const startListening = (chatId,chatName) => {
+  const startListening = (chatId, chatName) => {
     // prevent multiple listeners
     setFetchingMessages(true);
     /* if (unsubscribe) return; */
@@ -42,9 +42,9 @@ const Home = () => {
       }));
       setMessages(messagesData);
       setFetchingMessages(false);
-      setCurrentChat({chatId, chatName});
+      setCurrentChat({ chatId, chatName });
     });
-    
+
     setUnsubscribe(() => unsub);
   };
   const stopListening = () => {
@@ -54,12 +54,12 @@ const Home = () => {
       setUnsubscribe(null);
     }
   };
-  const handleChatClick = (chatId, chatName)=>{
+  const handleChatClick = (chatId, chatName) => {
     stopListening();
     startListening(chatId, chatName)
   }
-  const handleSendMessage = async(chatId)=>{
-    if(message.trim().length == 0){
+  const handleSendMessage = async (chatId) => {
+    if (message.trim().length == 0) {
       alert("empty messages not supported!");
     }
     try {
@@ -75,7 +75,7 @@ const Home = () => {
     } catch (err) {
       alert("An error occured");
       console.error("Error adding document:", err);
-    }finally{
+    } finally {
       setSendingMessage(false);
     }
   }
@@ -91,7 +91,7 @@ const Home = () => {
 
   useEffect(() => {
     const chatsRef = collection(db, "chats");
-    const q = query(chatsRef,or(where("user1", "==", auth.currentUser.displayName),where("user2", "==", auth.currentUser.displayName)));
+    const q = query(chatsRef, or(where("user1", "==", auth.currentUser.displayName), where("user2", "==", auth.currentUser.displayName)));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const chatsData = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -103,57 +103,165 @@ const Home = () => {
 
     return () => unsubscribe();
   }, []);
-  return ( 
-    <div className="self-center h-[100vh] w-[100vw] max-w-[1200px] bg-[whitesmoke] p-[50px] relative">
-      <section className="flex justify-between">
-        <h1 className="text-green-800 font-bold text-2xl">iBen Messenger</h1>
-        <button onClick={handleLogout} className="text-lg font-bold cursor-pointer"><i className="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+  return (
+    <div className="self-center h-[100vh] w-[100vw] max-w-[1400px] bg-gradient-to-br from-green-50 via-white to-green-100 px-8 py-6 relative">
+      {/* Header Section */}
+      <section className="flex justify-between items-center mb-6">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent">
+          iBen Messenger
+        </h1>
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 px-6 py-2.5 text-white bg-green-800 hover:bg-green-900 rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
+        >
+          <i className="fa-solid fa-arrow-right-from-bracket"></i> Logout
+        </button>
       </section>
-      <hr />
-      <section className="bg-white flex">
-        <div className="w-[30%] min-w-[300px] rounded-2xl bg-white h-[calc(100vh-90px)] p-[10px] shadow-[0px_0px_5px_4px_rgba(0,_0,_0,_0.1)] relative mr-[10px]">
-          <h1 className="text-green-800 font-bold text-lg">Chats</h1>
-          <input onKeyUp={handleSearchChats} onChange={(e)=>setSearchText(e.target.value)} type="text" placeholder="Type here to search" className=" w-full my-[20px] py-[5px] px-[20px] rounded-2xl shadow-[0px_0px_5px_4px_rgba(0,_0,_0,_0.1)] text-sm"/>
-          {
-            chatsFinal.length == 0? <h1 className="text-center">No chats available</h1> :chatsFinal.map((chat)=>{
-              const thisChatName = chat.user1!==auth.currentUser.displayName?chat.user1 : chat.user2;
-              return (
-                <div style={{backgroundColor: thisChatName==currentChat?.chatName && "lightgreen"}} onClick={()=>handleChatClick(chat.id, chat.user1!==auth.currentUser.displayName?chat.user1 : chat.user2)} key={chat.id} className=" shadow-[0px_0px_5px_1px_rgba(0,_0,_0,_0.1)] rounded-3xl py-[5px] px-[15px] mb-[5px] cursor-pointer">
-                  <h2 className="text-sm text-green-800 font-bold">{thisChatName}</h2>
-                  <p className="text-sm italic ">Chat with {thisChatName}</p>
-                </div>
-              )
-            })
-          }
-          <button onClick={()=>setShowAddNewChat(true)} className=" flex justify-center absolute bottom-[20px] right-[20px] bg-green-800 text-white rounded-full cursor-pointer hover:shadow-[0px_0px_5px_4px_rgba(0,_0,_0,_0.1)] text-5xl w-[60px] h-[60px]">+</button>
+
+      {/* Main Chat Section */}
+      <section className="flex gap-4 h-[calc(100vh-100px)]">
+        {/* Sidebar - Chat List */}
+        <div className="w-[30%] min-w-[320px] rounded-3xl bg-white/90 backdrop-blur-sm h-full p-5 shadow-xl border border-green-100 relative flex flex-col">
+          <h2 className="text-2xl font-bold text-green-800 mb-4">
+            Chats
+          </h2>
+
+          {/* Search Input */}
+          <input
+            onKeyUp={handleSearchChats}
+            onChange={(e) => setSearchText(e.target.value)}
+            type="text"
+            placeholder="Search conversations..."
+            className="w-full mb-4 py-3 px-5 rounded-xl border-2 border-green-600 focus:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400 text-sm"
+          />
+
+          {/* Chat List */}
+          <div className="flex-1 overflow-y-auto space-y-2 pr-2">
+            {
+              chatsFinal.length == 0 ?
+                <p className="text-center text-gray-500 italic mt-8">No chats available</p>
+                : chatsFinal.map((chat) => {
+                  const thisChatName = chat.user1 !== auth.currentUser.displayName ? chat.user1 : chat.user2;
+                  return (
+                    <div
+                      style={{
+                        backgroundColor: thisChatName == currentChat?.chatName ? "rgba(34, 197, 94, 0.15)" : "transparent"
+                      }}
+                      onClick={() => handleChatClick(chat.id, thisChatName)}
+                      key={chat.id}
+                      className="rounded-2xl py-3 px-4 cursor-pointer transition-all duration-200 hover:bg-green-50 border-2 border-transparent hover:border-green-200 hover:shadow-md"
+                    >
+                      <h3 className="text-sm font-bold text-green-800 mb-1 flex items-center gap-2">
+                        <i className="fa-solid fa-user-circle text-lg"></i>
+                        {thisChatName}
+                      </h3>
+                      <p className="text-xs text-gray-600">Chat with {thisChatName}</p>
+                    </div>
+                  )
+                })
+            }
+          </div>
+
+          {/* Add New Chat Button */}
+          <button
+            onClick={() => setShowAddNewChat(true)}
+            className="absolute bottom-6 right-6 bg-green-800 hover:bg-green-900 text-white rounded-full cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl text-4xl w-14 h-14 flex items-center justify-center hover:scale-110 active:scale-95"
+          >
+            +
+          </button>
         </div>
-        <div style={{justifyContent: !currentChat&&"center", alignItems: !currentChat&&"center"}} className="flex flex-col gap-[10px] w-full rounded-2xl bg-white h-[calc(100vh-90px)] px-[10px] shadow-[0px_0px_5px_4px_rgba(0,_0,_0,_0.1)] relative overflow-y-auto py-[0px]">
-          {fetchingMessages && <span className="w-[60px] h-[60px] border-[3px] border-gray-300 border-t-green-800 animate-spin rounded-full"></span>}
-          {!currentChat && !fetchingMessages && <h1 className="italic font bold">No chat selected</h1> }
-          {currentChat && <section className="mb-auto bg-white sticky top-0 p-[10px] shadow-[0px_5px_8px_0px_rgba(0,_0,_0,_0.1)] mx-[-10px]">
-            <h1 className="text-lg text-green-800 font-bold">{currentChat.chatName}</h1>
-          </section>}
-          {
-            messages.length==0 && currentChat ? <p className="italic text-center" >No messages </p> : messages.map((message)=>{
-              return(
-                <div style={{alignSelf: message.sender == auth.currentUser.displayName ? "flex-start":"flex-end"}} className="flex flex-col w-fit">
-                  <span style={{backgroundColor: message.sender == auth.currentUser.displayName?"green":"whitesmoke", color: message.sender == auth.currentUser.displayName?"white":"black"}} className="bg-green-800 px-[10px] py-[5px] rounded-2xl">{message.body}</span>
-                  <span className="italic text-sm">{message.createdAt?.toDate().toLocaleString("en-GB")}</span>
-                </div>
-              )
-            })
-          }
-          {currentChat && <section className="mt-auto gap-[5px] flex justify-center sticky bottom-0 bg-white p-[10px] mx-[-10px] shadow-[0px_-5px_8px_0px_rgba(0,_0,_0,_0.1)]">
-            <input value={message} onChange={(e)=>setMessage(e.target.value)} className="px-[15px] py-[5px] w-[80%] rounded-2xl border-[3px] border-green-800 focus:outline-green-800" type="text" placeholder="Type your message" autoFocus/>
-            <button onClick={()=>handleSendMessage(currentChat.chatId)} className="text-white bg-green-800 px-[20px] py-[5px] rounded-[20px] font-bold" disabled={sendingMessage}>Send</button>
-          </section>}
+
+        {/* Main Chat Area */}
+        <div
+          style={{
+            justifyContent: !currentChat && "center",
+            alignItems: !currentChat && "center"
+          }}
+          className="flex flex-col w-full rounded-3xl bg-white/90 backdrop-blur-sm h-full shadow-xl border border-green-100 relative overflow-hidden"
+        >
+          {/* Loading Spinner */}
+          {fetchingMessages && (
+            <span className="w-16 h-16 border-4 border-gray-200 border-t-green-700 animate-spin rounded-full"></span>
+          )}
+
+          {/* Empty State */}
+          {!currentChat && !fetchingMessages && (
+            <div className="text-center">
+              <i className="fa-solid fa-comments text-6xl text-green-200 mb-4"></i>
+              <h2 className="text-2xl font-bold text-gray-400 italic">Select a chat to start messaging</h2>
+            </div>
+          )}
+
+          {/* Chat Header */}
+          {currentChat && (
+            <section className="bg-green-800 p-4 shadow-lg">
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <i className="fa-solid fa-user-circle"></i>
+                {currentChat.chatName}
+              </h2>
+            </section>
+          )}
+
+          {/* Messages Area */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-4 flex flex-col">
+            {
+              messages.length == 0 && currentChat ?
+                <p className="italic text-center text-gray-400 mt-8">No messages yet. Start the conversation!</p>
+                : messages.map((message, index) => {
+                  const isCurrentUser = message.sender == auth.currentUser.displayName;
+                  return (
+                    <div
+                      key={index}
+                      style={{ alignSelf: isCurrentUser ? "flex-start" : "flex-end" }}
+                      className="flex flex-col w-fit max-w-[70%] animate-fadeIn"
+                    >
+                      <span
+                        className={`px-4 py-3 rounded-2xl shadow-md ${isCurrentUser
+                          ? "bg-green-700 text-white rounded-tl-sm"
+                          : "bg-gray-100 text-gray-800 rounded-tr-sm"
+                          }`}
+                      >
+                        {message.body}
+                      </span>
+                      <span className="text-xs text-gray-500 mt-1 mx-2">
+                        {message.createdAt?.toDate().toLocaleString("en-GB")}
+                      </span>
+                    </div>
+                  )
+                })
+            }
+          </div>
+
+          {/* Message Input Area */}
+          {currentChat && (
+            <section className="bg-white border-t-2 border-green-100 p-4 flex gap-3 shadow-lg">
+              <input
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(currentChat.chatId)}
+                className="flex-1 px-5 py-3 rounded-xl border-2 border-green-600 focus:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400"
+                type="text"
+                placeholder="Type your message..."
+                autoFocus
+              />
+              <button
+                onClick={() => handleSendMessage(currentChat.chatId)}
+                className="px-6 py-3 bg-green-800 hover:bg-green-900 text-white rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={sendingMessage}
+              >
+                <i className="fa-solid fa-paper-plane mr-2"></i>Send
+              </button>
+            </section>
+          )}
         </div>
       </section>
-      <CreateNewChatContext.Provider value={{showAddNewChat, setShowAddNewChat}}>
-        {showAddNewChat ?<NewChat />:''}
+
+      {/* New Chat Modal */}
+      <CreateNewChatContext.Provider value={{ showAddNewChat, setShowAddNewChat }}>
+        {showAddNewChat && <NewChat />}
       </CreateNewChatContext.Provider>
     </div>
-   );
+  );
 }
- 
+
 export default Home;
