@@ -33,7 +33,6 @@ const Signup = () => {
           displayName: username,
         });
         setLoading(false)
-        alert("Signup successful!");
         setEmail('');
         setUsername('');
         setPassword('');
