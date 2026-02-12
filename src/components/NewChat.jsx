@@ -73,9 +73,9 @@ const NewChat = () => {
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 z-[100] flex justify-center items-center bg-green-900/40 backdrop-blur-md">
       <ClickAwayListener onClickAway={() => setShowAddNewChat(false)}>
-        <div className="bg-white/95 backdrop-blur-sm h-[80vh] w-[420px] rounded-3xl p-6 shadow-2xl border border-green-100 flex flex-col">
+        <div className="bg-white/95 backdrop-blur-sm h-[80vh] w-[90%] max-w-[420px] rounded-3xl p-4 md:p-6 shadow-2xl border border-green-100 flex flex-col">
           {/* Header */}
-          <h2 className="text-2xl font-bold text-green-800 mb-4">
+          <h2 className="text-xl md:text-2xl font-bold text-green-800 mb-4">
             Start New Chat
           </h2>
 
