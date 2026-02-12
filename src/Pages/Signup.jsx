@@ -50,11 +50,11 @@ const Signup = () => {
       <div className="flex items-center justify-center min-h-[100vh] bg-gradient-to-br from-green-50 via-white to-green-100 w-screen">
         <form
           onSubmit={handleSignup}
-          className="flex flex-col gap-5 px-10 py-12 bg-white/80 backdrop-blur-sm shadow-xl rounded-3xl w-[420px] border border-green-100"
+          className="flex flex-col gap-5 px-6 md:px-10 py-8 md:py-12 bg-white/80 backdrop-blur-sm shadow-xl rounded-3xl w-[90%] max-w-[420px] border border-green-100"
         >
           {/* Header Section */}
           <div className="text-center mb-4">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent mb-2">
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent mb-2">
               Create Account
             </h1>
             <p className="text-gray-600 text-sm">Sign up to get started</p>
