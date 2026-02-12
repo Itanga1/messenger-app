@@ -173,22 +173,22 @@ const Home = () => {
 
         {/* Main Chat Area */}
         <div
-          style={{
-            justifyContent: !currentChat && "center",
-            alignItems: !currentChat && "center"
-          }}
           className="flex flex-col w-full rounded-3xl bg-white/90 backdrop-blur-sm h-full shadow-xl border border-green-100 relative overflow-hidden"
         >
           {/* Loading Spinner */}
           {fetchingMessages && (
-            <span className="w-16 h-16 border-4 border-gray-200 border-t-green-700 animate-spin rounded-full"></span>
+            <div className="flex justify-center items-center h-full">
+              <span className="w-16 h-16 border-4 border-gray-200 border-t-green-700 animate-spin rounded-full"></span>
+            </div>
           )}
 
           {/* Empty State */}
           {!currentChat && !fetchingMessages && (
-            <div className="text-center">
-              <i className="fa-solid fa-comments text-6xl text-green-200 mb-4"></i>
-              <h2 className="text-2xl font-bold text-gray-400 italic">Select a chat to start messaging</h2>
+            <div className="flex justify-center items-center h-full">
+              <div className="text-center">
+                <i className="fa-solid fa-comments text-6xl text-green-200 mb-4"></i>
+                <h2 className="text-2xl font-bold text-gray-400 italic">Select a chat to start messaging</h2>
+              </div>
             </div>
           )}
 
