@@ -1,6 +1,8 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
 body {
-  background-color: white;
+  @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300;
   display: flex;
   justify-content: center;
 }
