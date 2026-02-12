@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import NewChat from "../components/NewChat";
 import { CreateNewChatContext } from "../Contexts/CreateNewChatContext";
 import { auth, db } from "../config/firebase";
-import { addDoc, collection, onSnapshot, or, orderBy, query, serverTimestamp, where } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, or, orderBy, query, serverTimestamp, where, deleteDoc, doc } from "firebase/firestore";
 import Loading from "../components/Loading";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
@@ -81,6 +81,23 @@ const Home = () => {
       setSendingMessage(false);
     }
   }
+  const handleDeleteChat = async (e, chatId) => {
+    e.stopPropagation();
+    if (window.confirm("Are you sure you want to delete this chat?")) {
+      try {
+        await deleteDoc(doc(db, "chats", chatId));
+        // If the deleted chat is currently open, close it
+        if (currentChat && currentChat.chatId === chatId) {
+          setCurrentChat(null);
+          setMessages([]);
+        }
+      } catch (err) {
+        console.error("Error deleting chat:", err);
+        alert("Failed to delete chat.");
+      }
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -187,13 +204,22 @@ const Home = () => {
                         }}
                         onClick={() => handleChatClick(chat.id, thisChatName)}
                         key={chat.id}
-                        className="rounded-2xl py-3 px-4 cursor-pointer transition-all duration-200 hover:bg-green-50 border-2 border-transparent hover:border-green-200 hover:shadow-md"
+                        className="rounded-2xl py-3 px-4 cursor-pointer transition-all duration-200 hover:bg-green-50 border-2 border-transparent hover:border-green-200 hover:shadow-md flex justify-between items-center group"
                       >
-                        <h3 className="text-sm font-bold text-green-800 mb-1 flex items-center gap-2">
-                          <i className="fa-solid fa-user-circle text-lg"></i>
-                          {thisChatName}
-                        </h3>
-                        <p className="text-xs text-gray-600">Chat with {thisChatName}</p>
+                        <div>
+                          <h3 className="text-sm font-bold text-green-800 mb-1 flex items-center gap-2">
+                            <i className="fa-solid fa-user-circle text-lg"></i>
+                            {thisChatName}
+                          </h3>
+                          <p className="text-xs text-gray-600">Chat with {thisChatName}</p>
+                        </div>
+                        <button
+                          onClick={(e) => handleDeleteChat(e, chat.id)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-2 text-red-500 hover:bg-red-100 rounded-full"
+                          title="Delete Chat"
+                        >
+                          <i className="fa-solid fa-trash"></i>
+                        </button>
                       </div>
                     )
                   })
