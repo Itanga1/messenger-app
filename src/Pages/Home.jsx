@@ -19,6 +19,7 @@ const Home = () => {
   const [sendingMessage, setSendingMessage] = useState(false);
   const [messages, setMessages] = useState([]);
   const [unsubscribe, setUnsubscribe] = useState(null);
+  const [showSidebar, setShowSidebar] = useState(false); // Mobile sidebar toggle
   const navigate = useNavigate();
 
   const handleSearchChats = () => {
@@ -56,7 +57,8 @@ const Home = () => {
   };
   const handleChatClick = (chatId, chatName) => {
     stopListening();
-    startListening(chatId, chatName)
+    startListening(chatId, chatName);
+    setShowSidebar(false); // Close sidebar on mobile when chat is selected
   }
   const handleSendMessage = async (chatId) => {
     if (message.trim().length == 0) {
@@ -104,71 +106,108 @@ const Home = () => {
     return () => unsubscribe();
   }, []);
   return (
-    <div className="self-center h-[100vh] w-[100vw] max-w-[1400px] bg-gradient-to-br from-green-50 via-white to-green-100 px-8 py-6 relative">
+    <div className="self-center h-[100vh] w-[100vw] max-w-[1400px] bg-gradient-to-br from-green-50 via-white to-green-100 px-4 md:px-8 py-4 md:py-6 relative">
       {/* Header Section */}
-      <section className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent">
-          iBen Messenger
-        </h1>
+      <section className="flex justify-between items-center mb-4 md:mb-6">
+        <div className="flex items-center gap-3">
+          {/* Hamburger Menu Button - Mobile Only */}
+          <button
+            onClick={() => setShowSidebar(!showSidebar)}
+            className="md:hidden flex items-center justify-center w-10 h-10 text-green-800 hover:bg-green-100 rounded-lg transition-all duration-300 active:scale-95"
+          >
+            <i className={`fa-solid ${showSidebar ? 'fa-times' : 'fa-bars'} text-xl`}></i>
+          </button>
+
+          <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent">
+            iBen Messenger
+          </h1>
+        </div>
         <button
           onClick={handleLogout}
-          className="flex items-center gap-2 px-6 py-2.5 text-white bg-green-800 hover:bg-green-900 rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
+          className="flex items-center gap-1 md:gap-2 px-3 md:px-6 py-2 md:py-2.5 text-sm md:text-base text-white bg-green-800 hover:bg-green-900 rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
         >
-          <i className="fa-solid fa-arrow-right-from-bracket"></i> Logout
+          <i className="fa-solid fa-arrow-right-from-bracket"></i>
+          <span className="hidden sm:inline">Logout</span>
         </button>
       </section>
 
       {/* Main Chat Section */}
-      <section className="flex gap-4 h-[calc(100vh-100px)]">
+      <section className="flex flex-col md:flex-row gap-2 md:gap-4 h-[calc(100vh-80px)] md:h-[calc(100vh-100px)] relative">
         {/* Sidebar - Chat List */}
-        <div className="w-[30%] min-w-[320px] rounded-3xl bg-white/90 backdrop-blur-sm h-full p-5 shadow-xl border border-green-100 relative flex flex-col">
-          <h2 className="text-2xl font-bold text-green-800 mb-4">
-            Chats
-          </h2>
-
-          {/* Search Input */}
-          <input
-            onKeyUp={handleSearchChats}
-            onChange={(e) => setSearchText(e.target.value)}
-            type="text"
-            placeholder="Search conversations..."
-            className="w-full mb-4 py-3 px-5 rounded-xl border-2 border-green-600 focus:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400 text-sm"
-          />
-
-          {/* Chat List */}
-          <div className="flex-1 overflow-y-auto space-y-2 pr-2">
-            {
-              chatsFinal.length == 0 ?
-                <p className="text-center text-gray-500 italic mt-8">No chats available</p>
-                : chatsFinal.map((chat) => {
-                  const thisChatName = chat.user1 !== auth.currentUser.displayName ? chat.user1 : chat.user2;
-                  return (
-                    <div
-                      style={{
-                        backgroundColor: thisChatName == currentChat?.chatName ? "rgba(34, 197, 94, 0.15)" : "transparent"
-                      }}
-                      onClick={() => handleChatClick(chat.id, thisChatName)}
-                      key={chat.id}
-                      className="rounded-2xl py-3 px-4 cursor-pointer transition-all duration-200 hover:bg-green-50 border-2 border-transparent hover:border-green-200 hover:shadow-md"
-                    >
-                      <h3 className="text-sm font-bold text-green-800 mb-1 flex items-center gap-2">
-                        <i className="fa-solid fa-user-circle text-lg"></i>
-                        {thisChatName}
-                      </h3>
-                      <p className="text-xs text-gray-600">Chat with {thisChatName}</p>
-                    </div>
-                  )
-                })
-            }
-          </div>
-
-          {/* Add New Chat Button */}
-          <button
-            onClick={() => setShowAddNewChat(true)}
-            className="absolute bottom-6 right-6 bg-green-800 hover:bg-green-900 text-white rounded-full cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl text-4xl w-14 h-14 flex items-center justify-center hover:scale-110 active:scale-95"
+        <div className={`
+          ${showSidebar ? 'fixed inset-0 z-40 bg-black/50 md:bg-transparent' : 'hidden'}
+          md:relative md:block md:bg-transparent
+        `}>
+          <div
+            className={`
+              ${showSidebar ? 'translate-x-0' : '-translate-x-full'}
+              md:translate-x-0
+              transition-transform duration-300
+              w-[80%] md:w-[30%] md:min-w-[320px] 
+              rounded-3xl bg-white/90 backdrop-blur-sm 
+              h-full p-4 md:p-5 
+              shadow-xl border border-green-100 
+              relative flex flex-col
+            `}
           >
-            +
-          </button>
+            <div className="flex justify-between items-center mb-3 md:mb-4">
+              <h2 className="text-xl md:text-2xl font-bold text-green-800">
+                Chats
+              </h2>
+
+              {/* Close Button - Mobile Only */}
+              <button
+                onClick={() => setShowSidebar(false)}
+                className="md:hidden flex items-center justify-center w-9 h-9 text-green-800 hover:bg-green-100 rounded-lg transition-all duration-200"
+              >
+                <i className="fa-solid fa-times text-xl"></i>
+              </button>
+            </div>
+
+            {/* Search Input */}
+            <input
+              onKeyUp={handleSearchChats}
+              onChange={(e) => setSearchText(e.target.value)}
+              type="text"
+              placeholder="Search conversations..."
+              className="w-full mb-3 md:mb-4 py-2 md:py-3 px-4 md:px-5 rounded-xl border-2 border-green-600 focus:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400 text-sm"
+            />
+
+            {/* Chat List */}
+            <div className="flex-1 overflow-y-auto space-y-2 pr-2">
+              {
+                chatsFinal.length == 0 ?
+                  <p className="text-center text-gray-500 italic mt-8">No chats available</p>
+                  : chatsFinal.map((chat) => {
+                    const thisChatName = chat.user1 !== auth.currentUser.displayName ? chat.user1 : chat.user2;
+                    return (
+                      <div
+                        style={{
+                          backgroundColor: thisChatName == currentChat?.chatName ? "rgba(34, 197, 94, 0.15)" : "transparent"
+                        }}
+                        onClick={() => handleChatClick(chat.id, thisChatName)}
+                        key={chat.id}
+                        className="rounded-2xl py-3 px-4 cursor-pointer transition-all duration-200 hover:bg-green-50 border-2 border-transparent hover:border-green-200 hover:shadow-md"
+                      >
+                        <h3 className="text-sm font-bold text-green-800 mb-1 flex items-center gap-2">
+                          <i className="fa-solid fa-user-circle text-lg"></i>
+                          {thisChatName}
+                        </h3>
+                        <p className="text-xs text-gray-600">Chat with {thisChatName}</p>
+                      </div>
+                    )
+                  })
+              }
+            </div>
+
+            {/* Add New Chat Button */}
+            <button
+              onClick={() => setShowAddNewChat(true)}
+              className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-green-800 hover:bg-green-900 text-white rounded-full cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl text-3xl md:text-4xl w-12 h-12 md:w-14 md:h-14 flex items-center justify-center hover:scale-110 active:scale-95"
+            >
+              +
+            </button>
+          </div>
         </div>
 
         {/* Main Chat Area */}
@@ -194,8 +233,8 @@ const Home = () => {
 
           {/* Chat Header */}
           {currentChat && (
-            <section className="bg-green-800 p-4 shadow-lg">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <section className="bg-green-800 p-3 md:p-4 shadow-lg">
+              <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
                 <i className="fa-solid fa-user-circle"></i>
                 {currentChat.chatName}
               </h2>
@@ -203,7 +242,7 @@ const Home = () => {
           )}
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4 flex flex-col">
+          <div className="flex-1 overflow-y-auto p-3 md:p-6 space-y-3 md:space-y-4 flex flex-col">
             {
               messages.length == 0 && currentChat ?
                 <p className="italic text-center text-gray-400 mt-8">No messages yet. Start the conversation!</p>
@@ -213,7 +252,7 @@ const Home = () => {
                     <div
                       key={index}
                       style={{ alignSelf: isCurrentUser ? "flex-start" : "flex-end" }}
-                      className="flex flex-col w-fit max-w-[70%] animate-fadeIn"
+                      className="flex flex-col w-fit max-w-[85%] md:max-w-[70%] animate-fadeIn"
                     >
                       <span
                         className={`px-4 py-3 rounded-2xl shadow-md ${isCurrentUser
@@ -234,19 +273,19 @@ const Home = () => {
 
           {/* Message Input Area */}
           {currentChat && (
-            <section className="bg-white border-t-2 border-green-100 p-4 flex gap-3 shadow-lg">
+            <section className="bg-white border-t-2 border-green-100 p-3 md:p-4 flex gap-2 md:gap-3 shadow-lg">
               <input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(currentChat.chatId)}
-                className="flex-1 px-5 py-3 rounded-xl border-2 border-green-600 focus:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400"
+                className="flex-1 px-3 md:px-5 py-2 md:py-3 rounded-xl border-2 border-green-600 focus:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400 text-sm md:text-base"
                 type="text"
                 placeholder="Type your message..."
                 autoFocus
               />
               <button
                 onClick={() => handleSendMessage(currentChat.chatId)}
-                className="px-6 py-3 bg-green-800 hover:bg-green-900 text-white rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3 md:px-6 py-2 md:py-3 bg-green-800 hover:bg-green-900 text-white rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
                 disabled={sendingMessage}
               >
                 <i className="fa-solid fa-paper-plane mr-2"></i>Send
