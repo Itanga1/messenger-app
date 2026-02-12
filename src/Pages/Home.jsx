@@ -123,7 +123,7 @@ const Home = () => {
     return () => unsubscribe();
   }, []);
   return (
-    <div className="self-center h-[100vh] w-[100vw] max-w-[1400px] bg-gradient-to-br from-green-50 via-white to-green-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-950 px-4 md:px-8 py-4 md:py-6 relative transition-colors duration-300">
+    <div className="self-center h-[100vh] w-[100vw] max-w-[1400px] bg-gradient-to-br from-green-50 via-white to-green-100 px-4 md:px-8 py-4 md:py-6 relative">
       {/* Header Section */}
       <section className="flex justify-between items-center mb-4 md:mb-6">
         <div className="flex items-center gap-3">
@@ -135,26 +135,17 @@ const Home = () => {
             <i className={`fa-solid ${showSidebar ? 'fa-times' : 'fa-bars'} text-xl`}></i>
           </button>
 
-          <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-green-700 to-green-900 dark:from-green-400 dark:to-green-200 bg-clip-text text-transparent">
+          <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent">
             iBen Messenger
           </h1>
         </div>
-        <div className="flex items-center gap-2 md:gap-4">
-          <button
-            onClick={() => navigate('/settings')}
-            className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 text-green-800 dark:text-green-100 hover:bg-green-100 dark:hover:bg-gray-700 rounded-xl font-semibold transition-all duration-300 active:scale-95"
-            title="Settings"
-          >
-            <i className="fa-solid fa-gear text-xl"></i>
-          </button>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-1 md:gap-2 px-3 md:px-6 py-2 md:py-2.5 text-sm md:text-base text-white bg-green-800 hover:bg-green-900 dark:bg-green-700 dark:hover:bg-green-600 rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
-          >
-            <i className="fa-solid fa-arrow-right-from-bracket"></i>
-            <span className="hidden sm:inline">Logout</span>
-          </button>
-        </div>
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-1 md:gap-2 px-3 md:px-6 py-2 md:py-2.5 text-sm md:text-base text-white bg-green-800 hover:bg-green-900 rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
+        >
+          <i className="fa-solid fa-arrow-right-from-bracket"></i>
+          <span className="hidden sm:inline">Logout</span>
+        </button>
       </section>
 
       {/* Main Chat Section */}
@@ -170,9 +161,9 @@ const Home = () => {
               md:translate-x-0
               transition-transform duration-300
               w-[80%] md:w-[30%] md:min-w-[320px] 
-              rounded-3xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm 
+              rounded-3xl bg-white/90 backdrop-blur-sm 
               h-full p-4 md:p-5 
-              shadow-xl border border-green-100 dark:border-gray-700
+              shadow-xl border border-green-100 
               relative flex flex-col
             `}
           >
@@ -196,7 +187,7 @@ const Home = () => {
               onChange={(e) => setSearchText(e.target.value)}
               type="text"
               placeholder="Search conversations..."
-              className="w-full mb-3 md:mb-4 py-2 md:py-3 px-4 md:px-5 rounded-xl border-2 border-green-600 focus:border-green-800 dark:bg-gray-700 dark:border-green-500 dark:text-white dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400 text-sm"
+              className="w-full mb-3 md:mb-4 py-2 md:py-3 px-4 md:px-5 rounded-xl border-2 border-green-600 focus:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400 text-sm"
             />
 
             {/* Chat List */}
@@ -213,14 +204,14 @@ const Home = () => {
                         }}
                         onClick={() => handleChatClick(chat.id, thisChatName)}
                         key={chat.id}
-                        className="rounded-2xl py-3 px-4 cursor-pointer transition-all duration-200 hover:bg-green-50 dark:hover:bg-gray-700 border-2 border-transparent hover:border-green-200 dark:hover:border-gray-600 hover:shadow-md flex justify-between items-center group"
+                        className="rounded-2xl py-3 px-4 cursor-pointer transition-all duration-200 hover:bg-green-50 border-2 border-transparent hover:border-green-200 hover:shadow-md flex justify-between items-center group"
                       >
                         <div>
-                          <h3 className="text-sm font-bold text-green-800 dark:text-green-100 mb-1 flex items-center gap-2">
+                          <h3 className="text-sm font-bold text-green-800 mb-1 flex items-center gap-2">
                             <i className="fa-solid fa-user-circle text-lg"></i>
                             {thisChatName}
                           </h3>
-                          <p className="text-xs text-gray-600 dark:text-gray-400">Chat with {thisChatName}</p>
+                          <p className="text-xs text-gray-600">Chat with {thisChatName}</p>
                         </div>
                         <button
                           onClick={(e) => handleDeleteChat(e, chat.id)}
@@ -247,7 +238,7 @@ const Home = () => {
 
         {/* Main Chat Area */}
         <div
-          className="flex flex-col w-full rounded-3xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm h-full shadow-xl border border-green-100 dark:border-gray-700 relative overflow-hidden"
+          className="flex flex-col w-full rounded-3xl bg-white/90 backdrop-blur-sm h-full shadow-xl border border-green-100 relative overflow-hidden"
         >
           {/* Loading Spinner */}
           {fetchingMessages && (
@@ -268,7 +259,7 @@ const Home = () => {
 
           {/* Chat Header */}
           {currentChat && (
-            <section className="bg-green-800 dark:bg-green-900 p-3 md:p-4 shadow-lg">
+            <section className="bg-green-800 p-3 md:p-4 shadow-lg">
               <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
                 <i className="fa-solid fa-user-circle"></i>
                 {currentChat.chatName}
@@ -292,7 +283,7 @@ const Home = () => {
                       <span
                         className={`px-4 py-3 rounded-2xl shadow-md ${isCurrentUser
                           ? "bg-green-700 text-white rounded-tl-sm"
-                          : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 rounded-tr-sm"
+                          : "bg-gray-100 text-gray-800 rounded-tr-sm"
                           }`}
                       >
                         {message.body}
@@ -308,19 +299,19 @@ const Home = () => {
 
           {/* Message Input Area */}
           {currentChat && (
-            <section className="bg-white dark:bg-gray-800 border-t-2 border-green-100 dark:border-gray-700 p-3 md:p-4 flex gap-2 md:gap-3 shadow-lg">
+            <section className="bg-white border-t-2 border-green-100 p-3 md:p-4 flex gap-2 md:gap-3 shadow-lg">
               <input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(currentChat.chatId)}
-                className="flex-1 px-3 md:px-5 py-2 md:py-3 rounded-xl border-2 border-green-600 focus:border-green-800 dark:bg-gray-700 dark:border-green-500 dark:text-white dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400 text-sm md:text-base"
+                className="flex-1 px-3 md:px-5 py-2 md:py-3 rounded-xl border-2 border-green-600 focus:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400 text-sm md:text-base"
                 type="text"
                 placeholder="Type your message..."
                 autoFocus
               />
               <button
                 onClick={() => handleSendMessage(currentChat.chatId)}
-                className="px-3 md:px-6 py-2 md:py-3 bg-green-800 hover:bg-green-900 dark:bg-green-700 dark:hover:bg-green-600 text-white rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+                className="px-3 md:px-6 py-2 md:py-3 bg-green-800 hover:bg-green-900 text-white rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
                 disabled={sendingMessage}
               >
                 <i className="fa-solid fa-paper-plane mr-2"></i>Send

@@ -73,9 +73,9 @@ const NewChat = () => {
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 z-[100] flex justify-center items-center bg-green-900/40 backdrop-blur-md">
       <ClickAwayListener onClickAway={() => setShowAddNewChat(false)}>
-        <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm h-[80vh] w-[90%] max-w-[420px] rounded-3xl p-4 md:p-6 shadow-2xl border border-green-100 dark:border-gray-700 flex flex-col">
+        <div className="bg-white/95 backdrop-blur-sm h-[80vh] w-[90%] max-w-[420px] rounded-3xl p-4 md:p-6 shadow-2xl border border-green-100 flex flex-col">
           {/* Header */}
-          <h2 className="text-xl md:text-2xl font-bold text-green-800 dark:text-green-100 mb-4">
+          <h2 className="text-xl md:text-2xl font-bold text-green-800 mb-4">
             Start New Chat
           </h2>
 
@@ -85,12 +85,12 @@ const NewChat = () => {
             autoFocus
             type="text"
             placeholder="Search users..."
-            className="w-full mb-6 py-3 px-5 rounded-xl border-2 border-green-600 focus:border-green-800 dark:bg-gray-700 dark:border-green-500 dark:text-white dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400 text-sm"
+            className="w-full mb-6 py-3 px-5 rounded-xl border-2 border-green-600 focus:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-300 placeholder:text-gray-400 text-sm"
           />
 
           {/* Users List */}
           <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
-            <h3 className="font-semibold text-gray-700 dark:text-gray-300 mb-2">Available Users</h3>
+            <h3 className="font-semibold text-gray-700 mb-2">Available Users</h3>
 
             {loading ? (
               <div className="flex justify-center items-center h-full">
@@ -102,7 +102,7 @@ const NewChat = () => {
                   <div
                     key={user.id}
                     onClick={() => handleCreateChat(user.id, user.userName)}
-                    className="rounded-xl py-3 px-4 border-2 border-green-200 dark:border-gray-600 hover:border-green-600 dark:hover:border-green-500 hover:bg-green-800 dark:hover:bg-green-700 hover:text-white text-gray-800 dark:text-gray-200 cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md active:scale-95"
+                    className="rounded-xl py-3 px-4 border-2 border-green-200 hover:border-green-600 hover:bg-green-800 hover:text-white cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md active:scale-95"
                   >
                     <span className="font-semibold flex items-center gap-2">
                       <i className="fa-solid fa-user"></i>
