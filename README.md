@@ -1,12 +1,96 @@
-# React + Vite
+# Messenger App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A real-time messaging application built with React, Firebase, and Tailwind CSS. This application allows users to sign up, log in, and chat with other users in real-time. It features a modern, responsive UI with dark/light mode support.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+-   **User Authentication**: Sign up and login using Firebase Auth.
+-   **Real-time Messaging**: Send and receive messages instantly using Firebase Firestore.
+-   **Responsive Design**: optimized for both desktop and mobile devices.
+-   **Theme Toggle**: Switch between dark and light modes.
+-   **Search Functionality**: Find users to start chatting with.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+-   **Frontend**: React (with Vite)
+-   **Styling**: Tailwind CSS
+-   **Backend/Database**: Firebase (Auth, Firestore)
+-   **Routing**: React Router DOM
+
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+-   Node.js (v14 or higher) installed on your machine.
+-   npm package manager.
+-   A Firebase project set up with Authentication and Firestore enabled.
+
+## Installation
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/Itanga1/messenger-app.git
+    cd messenger-app
+    ```
+
+2.  **Install dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+3.  **Set up Environment Variables:**
+
+    Create a `.env.local` file in the root directory and add your Firebase configuration keys:
+
+    ```env
+    VITE_FIREBASE_API_KEY=your_api_key
+    VITE_AUTH_DOMAIN=your_auth_domain
+    VITE_PROJECT_ID=your_project_id
+    VITE_STORAGE_BUCKET=your_storage_bucket
+    VITE_MESSAGING_SENDER_ID=your_messaging_sender_id
+    VITE_APP_ID=your_app_id
+    ```
+
+## Usage
+
+1.  **Start the development server:**
+
+    ```bash
+    npm run dev
+    ```
+
+2.  **Build for production:**
+
+    ```bash
+    npm run build
+    ```
+
+3.  **Preview production build:**
+
+    ```bash
+    npm run preview
+    ```
+
+## Screenshots
+
+### Login Page
+
+![Login Page](./images/login.png)
+
+### Signup Page
+
+![Signup Page](./images/signup.png)
+
+### Home Page (Chat Interface)
+
+![Home Page](./images/home.png)
+
+### New Chat Form
+
+![New Chat Form](./images/new-chat.png)
+
+### Settings Page
+
+![Settings Page](./images/settings.png)
